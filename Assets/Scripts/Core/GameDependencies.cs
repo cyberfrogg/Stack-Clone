@@ -1,10 +1,14 @@
-﻿namespace Core
+﻿using Core.UI.Screens;
+
+namespace Core
 {
     public class GameDependencies
     {
-        public GameDependencies()
+        public readonly UiScreens UiScreens;
+
+        public GameDependencies(UiScreens uiScreens)
         {
-            
+            UiScreens = uiScreens;
         }
     }
 }
