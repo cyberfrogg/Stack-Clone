@@ -14,7 +14,7 @@ namespace Core
 
         public void Start()
         {
-            _dependencies.UiScreens.GetScreen<GameScreen>().ShowOne(null);
+            _dependencies.UiScreens.GetScreen<HomeScreen>().ShowOne(null);
         }
 
         public void Reset()
