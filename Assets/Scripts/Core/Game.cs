@@ -1,3 +1,4 @@
+using Core.UI.Screens.Impl;
 using UnityEngine;
 
 namespace Core
@@ -13,7 +14,7 @@ namespace Core
 
         public void Start()
         {
-            
+            _dependencies.UiScreens.GetScreen<HomeScreen>().ShowOne(null);
         }
 
         public void Reset()
