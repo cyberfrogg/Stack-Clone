@@ -17,7 +17,11 @@ namespace Core.Installers
 
         private Game CreateGame()
         {
-            GameDependencies dependencies = new GameDependencies(_uiScreensInstaller.Create(), _gameFlowInstaller.Create());
+            var gameFlowStrap = _gameFlowInstaller.Create();
+            GameDependencies dependencies = new GameDependencies(
+                _uiScreensInstaller.Create(gameFlowStrap),
+                gameFlowStrap
+                );
             
             Game game = new Game(dependencies);
             return game;

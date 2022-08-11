@@ -16,12 +16,11 @@ namespace Core
         {
             _dependencies.UiScreens.GetScreen<HomeScreen>().ShowOne(null);
             _dependencies.GameFlowStrap.GameStart.Started += OnGameStart;
-            _dependencies.GameFlowStrap.GameStart.Run();
         }
 
         private void OnGameStart()
         {
-            Debug.Log("Game started");
+            _dependencies.UiScreens.GetScreen<GameScreen>().ShowOne(null);
         }
 
         public void Reset()
