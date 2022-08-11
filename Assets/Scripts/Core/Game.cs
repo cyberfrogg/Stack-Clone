@@ -1,3 +1,4 @@
+using Core.Tower;
 using Core.UI.Screens.Impl;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ namespace Core
     public class Game
     {
         private readonly GameDependencies _dependencies;
+
+        private StackTower _tower;
 
         public Game(GameDependencies dependencies)
         {
@@ -21,6 +24,8 @@ namespace Core
         private void OnGameStart()
         {
             _dependencies.UiScreens.GetScreen<GameScreen>().ShowOne(null);
+
+            _tower = _dependencies.StackTowerFactory.CreateTower();
         }
 
         public void Reset()
