@@ -6,24 +6,22 @@ namespace Core.Tower
 {
     public class StackTower
     {
+        public Vector3 NextBlockPosition => _blockPositionCalculator.GetNextPosition(_blocks.Count);
+        
         private readonly IStackTowerSettings _settings;
-
         private readonly List<TowerBlock> _blocks = new();
+        private readonly BlockPositionCalculator _blockPositionCalculator;
 
         public StackTower(IStackTowerSettings settings)
         {
             _settings = settings;
+            _blockPositionCalculator = new BlockPositionCalculator(_settings.BlockHeight);
         }
 
         public void PlaceBlock(TowerBlock block)
         {
-            AlignBlock(block, _blocks.Count);
+            block.transform.position = _blockPositionCalculator.GetNextPosition(_blocks.Count);
             _blocks.Add(block);
-        }
-
-        private void AlignBlock(TowerBlock block, int blocksCount)
-        {
-            block.transform.position = new Vector3(0, blocksCount * _settings.BlockHeight + (_settings.BlockHeight / 2), 0);
         }
     }
 }

@@ -15,7 +15,6 @@ namespace Core.Tower.Blocks
         public TowerBlock CreateBlock()
         {
             var block = GameObject.Instantiate(_blockPrefab);
-            Debug.Log("instantiating block prefab");
             return block;
         }
     }
