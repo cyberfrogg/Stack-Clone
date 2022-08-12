@@ -7,7 +7,9 @@ namespace Core.Settings
     public class StackTowerSettings : ScriptableObject, IStackTowerSettings
     {
         public int InitialBlocksCount => _initialBlocksCount;
+        public float BlockHeight => _blockHeight;
 
-        [SerializeField, Min(0)] private int _initialBlocksCount;
+        [SerializeField, Min(0)] private int _initialBlocksCount = 4;
+        [SerializeField, Min(0)] private float _blockHeight = 1f;
     }
 }
