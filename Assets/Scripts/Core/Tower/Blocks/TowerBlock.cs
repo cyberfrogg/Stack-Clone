@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+//using System.IO;
 using System.Linq;
-using DG.Tweening;
-using DG.Tweening.Plugins.Core.PathCore;
+//using DG.Tweening;
+//using DG.Tweening.Plugins.Core.PathCore;
 using UnityEngine;
 
 namespace Core.Tower.Blocks
@@ -10,7 +11,7 @@ namespace Core.Tower.Blocks
     {
         private ITowerBlockSettings _settings;
         
-        private Tween _movementTween;
+        //private Tween _movementTween;
         private Vector3 _currentTweenPosition;
         
         public Vector3 Position
@@ -30,6 +31,7 @@ namespace Core.Tower.Blocks
 
         public void StartMovement(float yPosition, BlockMovementPathGenerator movementPathGenerator)
         {
+            /*
             var waypoints = movementPathGenerator.GetNext(_settings.Width, yPosition);
             AlignSelfAtStart(waypoints, yPosition);
             var path = new Path(PathType.Linear, waypoints.ToArray(), 5, Color.green);
@@ -38,12 +40,13 @@ namespace Core.Tower.Blocks
                     _settings.MovementDuration,
                     PathMode.TopDown2D)
                 .SetEase(Ease.Linear).SetLoops(-1);
+                */
         }
         public void Drop()
         {
-            _movementTween?.Kill();
-            transform.position = _movementTween != null ? _currentTweenPosition : transform.position;
-            _movementTween = null;
+            //_movementTween?.Kill();
+            //transform.position = _movementTween != null ? _currentTweenPosition : transform.position;
+            //_movementTween = null;
         }
 
         private void Update()
