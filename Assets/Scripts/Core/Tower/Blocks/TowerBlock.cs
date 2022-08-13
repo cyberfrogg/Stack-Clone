@@ -17,7 +17,6 @@ namespace Core.Tower.Blocks
         
         private Tween _movementTween;
         private Vector3 _currentTweenPosition;
-        private bool _isTweened;
 
         public void Destroy()
         {
@@ -26,13 +25,10 @@ namespace Core.Tower.Blocks
 
         public void StartMovement(float yPosition, BlockMovementPathGenerator movementPathGenerator)
         {
-            _isTweened = true;
-            
             var waypoints = movementPathGenerator.GetNext(_blockSize, yPosition);
             AlignSelfAtStart(waypoints, yPosition);
             var path = new Path(PathType.Linear, waypoints.ToArray(), 5, Color.green);
 
-            transform.DOKill();
             _movementTween = transform.DOPath(path,
                     _movementDuration,
                     PathMode.TopDown2D)
@@ -40,10 +36,9 @@ namespace Core.Tower.Blocks
         }
         public void Drop()
         {
-            transform.DOKill();
             _movementTween?.Kill();
+            transform.position = _movementTween != null ? _currentTweenPosition : transform.position;
             _movementTween = null;
-            transform.position = _isTweened ? _currentTweenPosition : transform.position;
         }
 
         private void Update()
