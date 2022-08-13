@@ -1,14 +1,9 @@
 {
-    "name": "Core",
+    "name": "Core.BlockPlacing",
     "rootNamespace": "",
     "references": [
-        "GUID:776d03a35f1b52c4a9aed9f56d7b4229",
-        "GUID:5aaf4715258e2bd408a064ed33d16dc2",
         "GUID:c5ffefc45ea69064587331636c97a5fd",
-        "GUID:6a12beecf7de35f40ac64a642db488e4",
-        "GUID:8993ff436102a4849bb185c9f631089f",
-        "GUID:ffcef33791a560347986c9103585c6e1",
-        "GUID:08e12f73ab3ff694ea17ce1dbfc292e1"
+        "GUID:3c2f9f5cae1ad0c41b0be4b91cbe460d"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

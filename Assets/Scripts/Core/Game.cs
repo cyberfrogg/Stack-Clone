@@ -1,3 +1,4 @@
+using Core.BlockPlacing;
 using Core.Tower;
 using Core.UI.Screens.Impl;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace Core
         private readonly GameDependencies _dependencies;
 
         private StackTower _tower;
+        private BlockPlacer _blockPlacer;
 
         public Game(GameDependencies dependencies)
         {
@@ -26,6 +28,7 @@ namespace Core
             _dependencies.UiScreens.GetScreen<GameScreen>().ShowOne(null);
 
             _tower = _dependencies.StackTowerFactory.CreateTower();
+            _blockPlacer = _dependencies.BlockPlacerFactory.CreateBlockPlacer(_tower);
         }
 
         public void Reset()

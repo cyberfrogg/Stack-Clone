@@ -8,6 +8,7 @@ namespace Core.Installers
         [SerializeField] private GameFlowInstaller _gameFlowInstaller;
         [SerializeField] private StackTowerInstaller _stackTowerInstaller;
         [SerializeField] private TowerBlocksInstaller _towerBlocksInstaller;
+        [SerializeField] private BlockPlacerInstaller _blockPlacerInstaller;
         
         private Game _game;
         
@@ -25,7 +26,8 @@ namespace Core.Installers
             GameDependencies dependencies = new GameDependencies(
                 _uiScreensInstaller.Create(gameFlowStrap),
                 gameFlowStrap,
-                _stackTowerInstaller.CreateStackTowerFactory(towerBlocksFactory)
+                _stackTowerInstaller.CreateStackTowerFactory(towerBlocksFactory),
+                _blockPlacerInstaller.CreateFactory(towerBlocksFactory)
                 );
             
             Game game = new Game(dependencies);

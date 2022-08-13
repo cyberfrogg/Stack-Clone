@@ -275,7 +275,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -355,6 +355,7 @@ GameObject:
   - component: {fileID: 644755333}
   - component: {fileID: 644755335}
   - component: {fileID: 644755334}
+  - component: {fileID: 644755336}
   m_Layer: 5
   m_Name: PlaceBlockTouch
   m_TagString: Untagged
@@ -420,6 +421,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 644755332}
   m_CullTransparentMesh: 1
+--- !u!114 &644755336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 644755332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c45436b070c4d5f8c518b357a02b30e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -995,6 +1008,8 @@ MonoBehaviour:
     _settings: {fileID: 11400000, guid: 421c4ad8599837f448db286dd3d60169, type: 2}
   _towerBlocksInstaller:
     _towerBlockPrefab: {fileID: -832239512660436706, guid: 1c1e8c7be57111647a1366a5318eb1eb, type: 3}
+  _blockPlacerInstaller:
+    _touchInput: {fileID: 644755336}
 --- !u!1 &1517598259
 GameObject:
   m_ObjectHideFlags: 0

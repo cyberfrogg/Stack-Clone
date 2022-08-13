@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Core.Tower
 {
-    public class StackTower
+    public class StackTower : IStackTower
     {
         public Vector3 NextBlockPosition => _blockPositionCalculator.GetNextPosition(_blocks.Count);
         
