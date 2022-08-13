@@ -1,4 +1,5 @@
-﻿using Core.Tower;
+﻿using System.Numerics;
+using Core.Tower;
 using Core.Tower.Blocks;
 using Utils;
 
@@ -10,6 +11,8 @@ namespace Core.BlockPlacing
         private readonly IStackTower _tower;
         private readonly ITowerBlocksFactory _towerBlockFactory;
 
+        private TowerBlock _currentBlock;
+
         public BlockPlacer(IBlockPlacerInput input, IStackTower tower, ITowerBlocksFactory towerBlockFactory)
         {
             _input = input;
@@ -18,16 +21,23 @@ namespace Core.BlockPlacing
 
             _input.Pressed += OnInputPress;
         }
-
         public void Destroy()
         {
             _input.Pressed -= OnInputPress;
         }
 
+        public void CreateMovingBlock()
+        {
+            _currentBlock = _towerBlockFactory.CreateBlock();
+            _currentBlock.StartMovement(_tower.NextBlockPosition.y);
+        }
+
         private void OnInputPress()
         {
-            var block = _towerBlockFactory.CreateBlock();
-            _tower.PlaceBlock(block);
+            if(_currentBlock == null)
+                return;
+            
+            _tower.PlaceBlock(_currentBlock);
         }
     }
 }

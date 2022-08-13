@@ -6,6 +6,7 @@ namespace Core.Tower
 {
     public interface IStackTower : IDestroy
     {
+        Vector3 NextBlockPosition { get; }
         void PlaceBlock(TowerBlock block);
     }
 }

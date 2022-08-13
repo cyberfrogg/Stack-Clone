@@ -29,6 +29,7 @@ namespace Core
 
             _tower = _dependencies.StackTowerFactory.CreateTower();
             _blockPlacer = _dependencies.BlockPlacerFactory.CreateBlockPlacer(_tower);
+            _blockPlacer.CreateMovingBlock();
         }
 
         public void Reset()
