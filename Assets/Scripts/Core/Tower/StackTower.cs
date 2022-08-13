@@ -22,12 +22,10 @@ namespace Core.Tower
         
         public void PlaceBlock(ITowerBlock block)
         {
-            block.Position = _blockPositionCalculator.GetNextPosition(_blocks.Count);
+            FixMissPlacing(block);
+            block.Position = NextBlockPosition;
             block.Drop();
             _blocks.Add(block);
-
-            float missDistance = GetMissDistance(block.Position);
-            Debug.Log($"Miss distance: {missDistance}");
         }
         
         public void Destroy()
@@ -35,6 +33,16 @@ namespace Core.Tower
             RemoveAllBlocks();
         }
 
+        private void FixMissPlacing(ITowerBlock towerBlock)
+        {
+            float missDistance = GetMissDistance(towerBlock.Position);
+            Debug.Log($"miss distance: {missDistance}");
+            if (missDistance <= _settings.MissPlacingTolerance)
+            {
+                towerBlock.Position = NextBlockPosition;
+                Debug.Log("fixed misplacing");
+            }
+        }
         private void RemoveAllBlocks()
         {
             foreach (var block in _blocks)
@@ -46,7 +54,7 @@ namespace Core.Tower
 
         private float GetMissDistance(Vector3 position)
         {
-            return Vector3.Distance(position, NextBlockPosition - new Vector3(0, _blockSettings.Height, 0));
+            return Vector3.Distance(position, NextBlockPosition - new Vector3(0, 0, 0));
         }
     }
 }

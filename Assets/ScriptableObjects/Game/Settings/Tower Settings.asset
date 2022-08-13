@@ -15,4 +15,4 @@ MonoBehaviour:
   _initialBlocksCount: 4
   _blockHeight: 1
   _center: {x: 0, y: 0, z: 0}
-  _missPlacingTolerance: 0.1
+  _missPlacingTolerance: 1
