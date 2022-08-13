@@ -1004,8 +1004,8 @@ MonoBehaviour:
     - {fileID: 852575977}
     - {fileID: 532895853}
   _stackTowerInstaller:
-    _towerSpawnpoint: {fileID: 1565498310}
     _settings: {fileID: 11400000, guid: 421c4ad8599837f448db286dd3d60169, type: 2}
+    _blockSettings: {fileID: 11400000, guid: b5d69643af2f0c346bd891bf1a12c702, type: 2}
   _towerBlocksInstaller:
     _towerBlockPrefab: {fileID: -832239512660436706, guid: 1c1e8c7be57111647a1366a5318eb1eb, type: 3}
     _towerBlockSettings: {fileID: 11400000, guid: b5d69643af2f0c346bd891bf1a12c702, type: 2}

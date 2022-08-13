@@ -9,12 +9,12 @@ namespace Core.Installers
     [Serializable]
     public class StackTowerInstaller
     {
-        [SerializeField, Required] private Transform _towerSpawnpoint;
         [SerializeField, Required] private StackTowerSettings _settings;
+        [SerializeField, Required] private TowerBlockSettings _blockSettings;
 
         public StackTowerFactory CreateStackTowerFactory(ITowerBlocksFactory towerBlocksFactory)
         {
-            return new StackTowerFactory(_settings, towerBlocksFactory);
+            return new StackTowerFactory(_settings, towerBlocksFactory, _blockSettings);
         }
     }
 }

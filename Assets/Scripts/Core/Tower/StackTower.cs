@@ -9,12 +9,14 @@ namespace Core.Tower
         public Vector3 NextBlockPosition => _blockPositionCalculator.GetNextPosition(_blocks.Count);
         
         private readonly IStackTowerSettings _settings;
+        private readonly ITowerBlockSettings _blockSettings;
         private readonly List<ITowerBlock> _blocks = new();
         private readonly BlockPositionCalculator _blockPositionCalculator;
 
-        public StackTower(IStackTowerSettings settings)
+        public StackTower(IStackTowerSettings settings, ITowerBlockSettings blockSettings)
         {
             _settings = settings;
+            _blockSettings = blockSettings;
             _blockPositionCalculator = new BlockPositionCalculator(_settings.BlockHeight);
         }
         
@@ -23,6 +25,9 @@ namespace Core.Tower
             block.Position = _blockPositionCalculator.GetNextPosition(_blocks.Count);
             block.Drop();
             _blocks.Add(block);
+
+            float missDistance = GetMissDistance(block.Position);
+            Debug.Log($"Miss distance: {missDistance}");
         }
         
         public void Destroy()
@@ -37,6 +42,11 @@ namespace Core.Tower
                 block?.Destroy();
             }
             _blocks.Clear();
+        }
+
+        private float GetMissDistance(Vector3 position)
+        {
+            return Vector3.Distance(position, NextBlockPosition - new Vector3(0, _blockSettings.Height, 0));
         }
     }
 }

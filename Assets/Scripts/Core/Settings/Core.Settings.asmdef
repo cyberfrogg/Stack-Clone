@@ -2,7 +2,8 @@
     "name": "Core.Settings",
     "rootNamespace": "",
     "references": [
-        "Core.Tower"
+        "Core.Tower",
+        "NaughtyAttributes.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
