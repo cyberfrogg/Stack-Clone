@@ -17,7 +17,6 @@ namespace Core.Tower
         {
             StackTower stackTower = new StackTower(_settings);
 
-            Debug.Log($"Creating tower with blocks: {_settings.InitialBlocksCount}");
             for (int i = 0; i < _settings.InitialBlocksCount; i++)
             {
                 stackTower.PlaceBlock(_towerBlocksFactory.CreateBlock());

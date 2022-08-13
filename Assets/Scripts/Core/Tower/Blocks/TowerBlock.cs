@@ -12,12 +12,15 @@ namespace Core.Tower.Blocks
 {
     public class TowerBlock : MonoBehaviour, IDestroy
     {
-        [SerializeField, Min(0)] private float _blockSize = 5;
-        [SerializeField, Min(0)] private float _movementDuration = 4;
+        private ITowerBlockSettings _settings;
         
         private Tween _movementTween;
         private Vector3 _currentTweenPosition;
 
+        public void Initialize(ITowerBlockSettings settings)
+        {
+            _settings = settings;
+        }
         public void Destroy()
         {
             GameObject.Destroy(gameObject);
@@ -25,12 +28,12 @@ namespace Core.Tower.Blocks
 
         public void StartMovement(float yPosition, BlockMovementPathGenerator movementPathGenerator)
         {
-            var waypoints = movementPathGenerator.GetNext(_blockSize, yPosition);
+            var waypoints = movementPathGenerator.GetNext(_settings.Width, yPosition);
             AlignSelfAtStart(waypoints, yPosition);
             var path = new Path(PathType.Linear, waypoints.ToArray(), 5, Color.green);
 
             _movementTween = transform.DOPath(path,
-                    _movementDuration,
+                    _settings.MovementDuration,
                     PathMode.TopDown2D)
                 .SetEase(Ease.Linear).SetLoops(-1);
         }
@@ -50,8 +53,8 @@ namespace Core.Tower.Blocks
         {
             transform.position = 
                 path.First().x == 0
-                    ? new Vector3(transform.position.z, yPosition, _blockSize)
-                    : new Vector3(_blockSize, yPosition, transform.position.z);
+                    ? new Vector3(transform.position.z, yPosition, _settings.Width)
+                    : new Vector3(_settings.Width, yPosition, transform.position.z);
         }
     }
 }
