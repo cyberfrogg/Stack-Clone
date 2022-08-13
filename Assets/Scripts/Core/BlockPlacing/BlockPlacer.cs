@@ -12,7 +12,7 @@ namespace Core.BlockPlacing
         private readonly ITowerBlocksFactory _towerBlockFactory;
         private readonly BlockMovementPathGenerator _blockMovementPathGenerator;
 
-        private TowerBlock _currentBlock;
+        private ITowerBlock _currentBlock;
 
         public BlockPlacer(IBlockPlacerInput input,
             IStackTower tower,

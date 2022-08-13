@@ -14,11 +14,11 @@ namespace Core.Tower.Blocks
             _towerBlockSettings = towerBlockSettings;
         }
         
-        public TowerBlock CreateBlock()
+        public ITowerBlock CreateBlock()
         {
             return CreateBlock(_towerBlockSettings.Width);
         }
-        public TowerBlock CreateBlock(float width)
+        public ITowerBlock CreateBlock(float width)
         {
             var block = GameObject.Instantiate(_blockPrefab);
             block.Initialize(_towerBlockSettings);

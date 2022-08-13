@@ -9,7 +9,7 @@ namespace Core.Tower
         public Vector3 NextBlockPosition => _blockPositionCalculator.GetNextPosition(_blocks.Count);
         
         private readonly IStackTowerSettings _settings;
-        private readonly List<TowerBlock> _blocks = new();
+        private readonly List<ITowerBlock> _blocks = new();
         private readonly BlockPositionCalculator _blockPositionCalculator;
 
         public StackTower(IStackTowerSettings settings)
@@ -18,9 +18,9 @@ namespace Core.Tower
             _blockPositionCalculator = new BlockPositionCalculator(_settings.BlockHeight);
         }
         
-        public void PlaceBlock(TowerBlock block)
+        public void PlaceBlock(ITowerBlock block)
         {
-            block.transform.position = _blockPositionCalculator.GetNextPosition(_blocks.Count);
+            block.Position = _blockPositionCalculator.GetNextPosition(_blocks.Count);
             block.Drop();
             _blocks.Add(block);
         }
@@ -34,10 +34,7 @@ namespace Core.Tower
         {
             foreach (var block in _blocks)
             {
-                if (block != null)
-                {
-                    block.Destroy();
-                }
+                block?.Destroy();
             }
             _blocks.Clear();
         }

@@ -1,22 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
-using DG.Tweening.Core;
 using DG.Tweening.Plugins.Core.PathCore;
 using UnityEngine;
-using UnityEngine.Serialization;
-using Utils;
 
 namespace Core.Tower.Blocks
 {
-    public class TowerBlock : MonoBehaviour, IDestroy
+    public class TowerBlock : MonoBehaviour, ITowerBlock
     {
         private ITowerBlockSettings _settings;
         
         private Tween _movementTween;
         private Vector3 _currentTweenPosition;
-
+        
+        public Vector3 Position
+        {
+            get => transform.position;
+            set => transform.position = value;
+        }
+        
         public void Initialize(ITowerBlockSettings settings)
         {
             _settings = settings;

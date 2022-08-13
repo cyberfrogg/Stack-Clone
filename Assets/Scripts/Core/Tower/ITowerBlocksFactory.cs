@@ -4,7 +4,7 @@ namespace Core.Tower
 {
     public interface ITowerBlocksFactory
     {
-        TowerBlock CreateBlock();
-        TowerBlock CreateBlock(float width);
+        ITowerBlock CreateBlock();
+        ITowerBlock CreateBlock(float width);
     }
 }
