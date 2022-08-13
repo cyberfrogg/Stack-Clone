@@ -23,7 +23,7 @@ namespace Core.Tower
 
             for (int i = 0; i < _settings.InitialBlocksCount; i++)
             {
-                stackTower.PlaceBlock(_towerBlocksFactory.CreateBlock());
+                stackTower.PlaceBlockAsIdeal(_towerBlocksFactory.CreateBlock());
             }
             
             return stackTower;

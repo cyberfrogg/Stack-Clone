@@ -23,6 +23,11 @@ namespace Core.Tower
         public void PlaceBlock(ITowerBlock block)
         {
             FixMissPlacing(block);
+            block.Drop();
+            _blocks.Add(block);
+        }
+        public void PlaceBlockAsIdeal(ITowerBlock block)
+        {
             block.Position = NextBlockPosition;
             block.Drop();
             _blocks.Add(block);
