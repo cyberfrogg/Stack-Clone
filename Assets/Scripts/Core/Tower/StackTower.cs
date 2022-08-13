@@ -17,11 +17,28 @@ namespace Core.Tower
             _settings = settings;
             _blockPositionCalculator = new BlockPositionCalculator(_settings.BlockHeight);
         }
-
+        
         public void PlaceBlock(TowerBlock block)
         {
             block.transform.position = _blockPositionCalculator.GetNextPosition(_blocks.Count);
             _blocks.Add(block);
+        }
+        
+        public void Destroy()
+        {
+            RemoveAllBlocks();
+        }
+
+        private void RemoveAllBlocks()
+        {
+            foreach (var block in _blocks)
+            {
+                if (block != null)
+                {
+                    block.Destroy();
+                }
+            }
+            _blocks.Clear();
         }
     }
 }

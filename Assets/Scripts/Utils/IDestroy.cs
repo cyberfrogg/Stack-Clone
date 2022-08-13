@@ -1,6 +1,6 @@
 ﻿namespace Utils
 {
-    public interface IDestroyable
+    public interface IDestroy
     {
         void Destroy();
     }

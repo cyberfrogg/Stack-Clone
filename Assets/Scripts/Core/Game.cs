@@ -9,7 +9,7 @@ namespace Core
     {
         private readonly GameDependencies _dependencies;
 
-        private StackTower _tower;
+        private IStackTower _tower;
         private BlockPlacer _blockPlacer;
 
         public Game(GameDependencies dependencies)
@@ -33,7 +33,14 @@ namespace Core
 
         public void Reset()
         {
+            Cleanup();
+        }
+        private void Cleanup()
+        {
+            _tower.Destroy();
             
+            _blockPlacer.Destroy();
+            _blockPlacer = null;
         }
     }
 }

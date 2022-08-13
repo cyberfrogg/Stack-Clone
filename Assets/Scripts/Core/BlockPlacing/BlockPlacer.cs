@@ -4,7 +4,7 @@ using Utils;
 
 namespace Core.BlockPlacing
 {
-    public class BlockPlacer : IDestroyable
+    public class BlockPlacer : IDestroy
     {
         private readonly IBlockPlacerInput _input;
         private readonly IStackTower _tower;
