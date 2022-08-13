@@ -15,6 +15,14 @@ namespace Tweening
             _tweenOperations.Add(operation);
         }
 
+        private void Update()
+        {
+            for (var i = 0; i < _tweenOperations.Count; i++)
+            {
+                _tweenOperations[i].Update();
+            }
+        }
+
         private void OnOperationComplete(ITweenOperation operation)
         {
             operation.Complete -= OnOperationComplete;

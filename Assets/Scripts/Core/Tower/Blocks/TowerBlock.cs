@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 //using System.IO;
 using System.Linq;
+using Tweening;
+using Tweening.Operations;
 //using DG.Tweening;
 //using DG.Tweening.Plugins.Core.PathCore;
 using UnityEngine;
@@ -10,9 +12,9 @@ namespace Core.Tower.Blocks
     public class TowerBlock : MonoBehaviour, ITowerBlock
     {
         private ITowerBlockSettings _settings;
-        
-        //private Tween _movementTween;
-        private Vector3 _currentTweenPosition;
+        private SimpleTweener _simpleTweener;
+
+        private ITweenOperation _currentTween;
         
         public Vector3 Position
         {
@@ -20,9 +22,10 @@ namespace Core.Tower.Blocks
             set => transform.position = value;
         }
         
-        public void Initialize(ITowerBlockSettings settings)
+        public void Initialize(ITowerBlockSettings settings, SimpleTweener simpleTweener)
         {
             _settings = settings;
+            _simpleTweener = simpleTweener;
         }
         public void Destroy()
         {
@@ -31,27 +34,14 @@ namespace Core.Tower.Blocks
 
         public void StartMovement(float yPosition, BlockMovementPathGenerator movementPathGenerator)
         {
-            /*
             var waypoints = movementPathGenerator.GetNext(_settings.Width, yPosition);
             AlignSelfAtStart(waypoints, yPosition);
-            var path = new Path(PathType.Linear, waypoints.ToArray(), 5, Color.green);
 
-            _movementTween = transform.DOPath(path,
-                    _settings.MovementDuration,
-                    PathMode.TopDown2D)
-                .SetEase(Ease.Linear).SetLoops(-1);
-                */
+            RunPathTween(waypoints);
         }
         public void Drop()
         {
-            //_movementTween?.Kill();
-            //transform.position = _movementTween != null ? _currentTweenPosition : transform.position;
-            //_movementTween = null;
-        }
-
-        private void Update()
-        {
-            _currentTweenPosition = transform.position;
+            _currentTween?.Stop();
         }
 
         private void AlignSelfAtStart(IEnumerable<Vector3> path, float yPosition)
@@ -60,6 +50,20 @@ namespace Core.Tower.Blocks
                 path.First().x == 0
                     ? new Vector3(transform.position.z, yPosition, _settings.Width)
                     : new Vector3(_settings.Width, yPosition, transform.position.z);
+        }
+
+        private void RunPathTween(IEnumerable<Vector3> waypoints)
+        {
+            _currentTween = CreatePathTween(waypoints);
+            _currentTween.Complete += (ITweenOperation _) =>
+            {
+                RunPathTween(waypoints);
+            };
+            _simpleTweener.Run(_currentTween);
+        }
+        private ITweenOperation CreatePathTween(IEnumerable<Vector3> waypoints)
+        {
+            return new PathMovement(transform, waypoints.ToArray(), _settings.MovementDuration);
         }
     }
 }

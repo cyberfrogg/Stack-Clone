@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Tweening;
 using UnityEngine;
 
 namespace Core.Tower.Blocks
@@ -7,11 +8,13 @@ namespace Core.Tower.Blocks
     {
         private readonly TowerBlock _blockPrefab;
         private readonly ITowerBlockSettings _towerBlockSettings;
+        private readonly SimpleTweener _simpleTweener;
 
-        public TowerBlockFactory(TowerBlock blockPrefab, ITowerBlockSettings towerBlockSettings)
+        public TowerBlockFactory(TowerBlock blockPrefab, ITowerBlockSettings towerBlockSettings, SimpleTweener simpleTweener)
         {
             _blockPrefab = blockPrefab;
             _towerBlockSettings = towerBlockSettings;
+            _simpleTweener = simpleTweener;
         }
         
         public ITowerBlock CreateBlock()
@@ -21,7 +24,7 @@ namespace Core.Tower.Blocks
         public ITowerBlock CreateBlock(float width)
         {
             var block = GameObject.Instantiate(_blockPrefab);
-            block.Initialize(_towerBlockSettings);
+            block.Initialize(_towerBlockSettings, _simpleTweener);
             return block;
         }
     }
