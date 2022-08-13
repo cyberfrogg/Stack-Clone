@@ -21,6 +21,7 @@ namespace Core.Tower
         public void PlaceBlock(TowerBlock block)
         {
             block.transform.position = _blockPositionCalculator.GetNextPosition(_blocks.Count);
+            block.Drop();
             _blocks.Add(block);
         }
         

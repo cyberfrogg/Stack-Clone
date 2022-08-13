@@ -10,14 +10,19 @@ namespace Core.BlockPlacing
         private readonly IBlockPlacerInput _input;
         private readonly IStackTower _tower;
         private readonly ITowerBlocksFactory _towerBlockFactory;
+        private readonly BlockMovementPathGenerator _blockMovementPathGenerator;
 
         private TowerBlock _currentBlock;
 
-        public BlockPlacer(IBlockPlacerInput input, IStackTower tower, ITowerBlocksFactory towerBlockFactory)
+        public BlockPlacer(IBlockPlacerInput input,
+            IStackTower tower,
+            ITowerBlocksFactory towerBlockFactory,
+            BlockMovementPathGenerator blockMovementPathGenerator)
         {
             _input = input;
             _tower = tower;
             _towerBlockFactory = towerBlockFactory;
+            _blockMovementPathGenerator = blockMovementPathGenerator;
 
             _input.Pressed += OnInputPress;
         }
@@ -29,7 +34,7 @@ namespace Core.BlockPlacing
         public void CreateMovingBlock()
         {
             _currentBlock = _towerBlockFactory.CreateBlock();
-            _currentBlock.StartMovement(_tower.NextBlockPosition.y);
+            _currentBlock.StartMovement(_tower.NextBlockPosition.y, _blockMovementPathGenerator);
         }
 
         private void OnInputPress()
@@ -38,6 +43,12 @@ namespace Core.BlockPlacing
                 return;
             
             _tower.PlaceBlock(_currentBlock);
+            OnBlockPlaced();
+        }
+
+        private void OnBlockPlaced()
+        {
+            CreateMovingBlock();
         }
     }
 }
