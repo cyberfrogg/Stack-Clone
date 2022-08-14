@@ -1,5 +1,6 @@
 ﻿using System;
 using NaughtyAttributes;
+using UnityEditor;
 using UnityEngine;
 
 namespace Core.Tower.Blocks
@@ -36,9 +37,19 @@ namespace Core.Tower.Blocks
 
             if (blockTargetScale <= 0)
                 throw new ApplicationException("Block target Scale <= 0. Run event: fail");
+
+            if (missDistance >= _block.Scale.magnitude)
+                throw new ApplicationException("missDistance >= _block.Scale.magnitude. Run event: fail");
+            
+
+            GameObject go = (_block as MonoBehaviour).gameObject;
+            GameObject dublicate = GameObject.Instantiate(go);
+            dublicate.name = "Block - CLONE";
+            dublicate.SetActive(false);
+            
             
             _block.Scale = ValueToCorrectAxis(axisScale - widthToCut, isZMovement, _block.Scale);
-            _block.Position = ValueToCorrectAxis(axisPosition + (widthToCut * 0.5f), isZMovement, _block.Position);
+            _block.Position = ValueToCorrectAxis(axisPosition + (-widthAlignModifier * widthToCut * 0.5f), isZMovement, _block.Position);
             
             Debug.Log($"Miss distance: {missDistance}");
             Debug.Log($"widthAlignModifier: {widthAlignModifier}");
