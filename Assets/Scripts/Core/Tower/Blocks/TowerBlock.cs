@@ -12,6 +12,7 @@ namespace Core.Tower.Blocks
         
         private ITowerBlockSettings _settings;
         private SimpleTweener _simpleTweener;
+        private Vector3 _towerCenter;
 
         private ITweenOperation _currentTween;
         private bool _isXMovement;
@@ -26,6 +27,8 @@ namespace Core.Tower.Blocks
         {
             _settings = settings;
             _simpleTweener = simpleTweener;
+            _towerCenter = _settings.TowerCenter;
+            _blockSplitter.Initialize(_settings, _towerCenter);
         }
         public void Destroy()
         {

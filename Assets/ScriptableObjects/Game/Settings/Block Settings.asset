@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: Block Settings
   m_EditorClassIdentifier: 
   _width: 5
+  _height: 1
   _moveDuration: 4
+  _stackTowerSettings: {fileID: 11400000, guid: 421c4ad8599837f448db286dd3d60169, type: 2}

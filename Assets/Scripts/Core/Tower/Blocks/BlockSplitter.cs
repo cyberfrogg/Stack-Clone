@@ -8,13 +8,77 @@ namespace Core.Tower.Blocks
     public class BlockSplitter
     {
         [SerializeField, Required] private GameObject _model;
+
+        private ITowerBlockSettings _towerBlockSettings;
+        private Vector3 _towerCenter;
         
+        private Vector3 _modelPosition
+        {
+            get => _model.transform.position;
+            set => _model.transform.position = value;
+        }
+        
+        public void Initialize(ITowerBlockSettings towerBlockSettings, Vector3 towerCenter)
+        {
+            _towerBlockSettings = towerBlockSettings;
+            _towerCenter = towerCenter;
+        }
         public void Split(float missDistance, bool isXMovement)
         {
             if (missDistance == 0)
                 return;
-            
-            Debug.Log("Splitting..");
+
+
+            if (!isXMovement)
+            {
+                if (_modelPosition.x >= _towerCenter.x)
+                {
+                    var widthToSave = _towerBlockSettings.Width - missDistance;
+                    var widthToCut = _towerBlockSettings.Width - widthToSave;
+                    _model.transform.localScale = ValueToCorrectAxis(ConvertWidthToScale(widthToSave), isXMovement, Vector3.one);
+                    _modelPosition = ValueToCorrectAxis((widthToCut / 2), isXMovement, _modelPosition);
+                    Debug.Log("X movement && _modelPosition.x >= _towerCenter.x");
+                }
+                else
+                {
+                    var widthToSave = _towerBlockSettings.Width - missDistance;
+                    var widthToCut = _towerBlockSettings.Width - widthToSave;
+                    _model.transform.localScale = ValueToCorrectAxis(ConvertWidthToScale(widthToSave), isXMovement, Vector3.one);
+                    _modelPosition = ValueToCorrectAxis(-(widthToCut / 2), isXMovement, _modelPosition);
+                    Debug.Log("X movement && _modelPosition.x < _towerCenter.x");
+                }
+            }
+            else
+            {
+                if (_modelPosition.z <= _towerCenter.z)
+                {
+                    var widthToSave = _towerBlockSettings.Width - missDistance;
+                    var widthToCut = _towerBlockSettings.Width - widthToSave;
+                    _model.transform.localScale = ValueToCorrectAxis(ConvertWidthToScale(widthToSave), isXMovement, Vector3.one);
+                    _modelPosition = ValueToCorrectAxis(-(widthToCut / 2), isXMovement, _modelPosition);
+                    Debug.Log("Z movement && _modelPosition.x <= _towerCenter.x");
+                }
+                else
+                {
+                    var widthToSave = _towerBlockSettings.Width - missDistance;
+                    var widthToCut = _towerBlockSettings.Width - widthToSave;
+                    _model.transform.localScale = ValueToCorrectAxis(ConvertWidthToScale(widthToSave), isXMovement, Vector3.one);
+                    _modelPosition = ValueToCorrectAxis((widthToCut / 2), isXMovement, _modelPosition);
+                    Debug.Log("Z movement && _modelPosition.x > _towerCenter.x");
+                }
+            }
+        }
+
+        private float ConvertWidthToScale(float width)
+        {
+            return width / _towerBlockSettings.Width;
+        }
+
+        private Vector3 ValueToCorrectAxis(float value, bool isXMovement, Vector3 initialPosition)
+        {
+            return !isXMovement
+                ? new Vector3(value, initialPosition.y, initialPosition.z)
+                : new Vector3(initialPosition.x, initialPosition.y, value);
         }
     }
 }
