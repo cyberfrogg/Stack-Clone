@@ -41,11 +41,9 @@ namespace Core.Tower
         private void FixMissPlacing(ITowerBlock towerBlock)
         {
             float missDistance = GetMissDistance(towerBlock.Position);
-            Debug.Log($"miss distance: {missDistance}");
             if (missDistance <= _settings.MissPlacingTolerance)
             {
                 towerBlock.Position = NextBlockPosition;
-                Debug.Log("fixed misplacing");
             }
         }
         private void RemoveAllBlocks()
