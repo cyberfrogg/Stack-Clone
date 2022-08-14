@@ -31,8 +31,8 @@ namespace Core.Tower.Blocks
             var axisScale = isZMovement ? _block.Scale.z : _block.Scale.x;
             var axisPosition = isZMovement ? _block.Position.z : _block.Position.x;
 
-            var widthToSave = Mathf.Abs(axisScale - missDistance);
-            var widthToCut = Mathf.Abs(axisScale - widthToSave);
+            var widthToSave = axisScale - missDistance;
+            var widthToCut = axisScale - widthToSave;
             var blockTargetScale = axisScale - widthToCut;
 
             if (blockTargetScale <= 0)
@@ -48,7 +48,7 @@ namespace Core.Tower.Blocks
             dublicate.SetActive(false);
             
             
-            _block.Scale = ValueToCorrectAxis(axisScale - widthToCut, isZMovement, _block.Scale);
+            _block.Scale = ValueToCorrectAxis(Mathf.Abs(axisScale - widthToCut), isZMovement, _block.Scale);
             _block.Position = ValueToCorrectAxis(axisPosition + (-widthAlignModifier * widthToCut * 0.5f), isZMovement, _block.Position);
             
             Debug.Log($"Miss distance: {missDistance}");
