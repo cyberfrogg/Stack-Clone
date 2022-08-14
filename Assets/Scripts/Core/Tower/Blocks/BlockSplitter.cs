@@ -7,27 +7,15 @@ namespace Core.Tower.Blocks
     [Serializable]
     public class BlockSplitter
     {
-        public Vector3 ModelPosition
-        {
-            get => _model.transform.position;
-            private set => _model.transform.position = value;
-        }
-        public Vector3 ModelScale
-        {
-            get => _model.transform.localScale;
-            private set => _model.transform.localScale = value;
-        }
-        
-        [SerializeField, Required] private GameObject _model;
-
         private ITowerBlockSettings _towerBlockSettings;
-        private Vector3 _center;
+        private ITowerBlock _block;
+        private ITowerBlock _lastBlock;
 
-        public void Initialize(ITowerBlockSettings towerBlockSettings, Vector3 center, Vector3 scale)
+        public void Initialize(ITowerBlockSettings towerBlockSettings, ITowerBlock block, ITowerBlock lastBlock)
         {
             _towerBlockSettings = towerBlockSettings;
-            _center = center;
-            ModelScale = scale;
+            _block = block;
+            _lastBlock = lastBlock;
         }
         public void Split(float missDistance, bool isZMovement)
         {
@@ -36,13 +24,15 @@ namespace Core.Tower.Blocks
 
             var widthAlignModifier = 
                 !isZMovement 
-                ? ModelPosition.x >= _center.x ? 1 : -1
-                : ModelPosition.z <= _center.z ? -1 : 1;
+                ? _block.Position.x >= _lastBlock.Position.x ? 1 : -1
+                : _block.Position.z <= _lastBlock.Position.z ? -1 : 1;
 
-            var widthToSave = _towerBlockSettings.Width - missDistance;
-            var widthToCut = _towerBlockSettings.Width - widthToSave;
-            _model.transform.localScale = ValueToCorrectAxis(ConvertWidthToScale(widthToSave), isZMovement, ModelScale);
-            ModelPosition = ValueToCorrectAxis(widthAlignModifier * (widthToCut / 2), isZMovement, ModelPosition);
+            var axisScale = isZMovement ? _block.Scale.z : _block.Scale.x;
+
+            var widthToSave = axisScale - missDistance;
+            var widthToCut = axisScale - widthToSave;
+            _block.Scale = ValueToCorrectAxis(widthToSave, isZMovement, _block.Scale);
+            _block.Position = ValueToCorrectAxis(widthAlignModifier * (widthToCut / 2), isZMovement, _block.Position);
         }
         
         private float ConvertWidthToScale(float width)
