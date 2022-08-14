@@ -6,6 +6,6 @@ namespace Core.Tower
     public interface ITowerBlocksFactory
     {
         ITowerBlock CreateBlock();
-        ITowerBlock CreateBlock(Vector3 lastBlockCenter);
+        ITowerBlock CreateBlock(Vector3 lastBlockCenter, Vector3 lastBlockScale);
     }
 }
