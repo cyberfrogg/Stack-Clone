@@ -28,11 +28,17 @@ namespace Core.Tower.Blocks
                 : _block.Position.z <= _lastBlock.Position.z ? -1 : 1;
 
             var axisScale = isZMovement ? _block.Scale.z : _block.Scale.x;
+            var axisPosition = isZMovement ? _block.Position.z : _block.Position.x;
 
-            var widthToSave = axisScale - missDistance;
-            var widthToCut = axisScale - widthToSave;
-            _block.Scale = ValueToCorrectAxis(widthToSave, isZMovement, _block.Scale);
-            _block.Position = ValueToCorrectAxis((widthAlignModifier * widthToCut) / 2, isZMovement, _block.Position);
+            var widthToSave = Mathf.Abs(axisScale - missDistance);
+            var widthToCut = Mathf.Abs(axisScale - widthToSave);
+            var blockTargetScale = axisScale - widthToCut;
+
+            if (blockTargetScale <= 0)
+                throw new ApplicationException("Block target Scale <= 0. Run event: fail");
+            
+            _block.Scale = ValueToCorrectAxis(axisScale - widthToCut, isZMovement, _block.Scale);
+            _block.Position = ValueToCorrectAxis(axisPosition + (widthToCut * 0.5f), isZMovement, _block.Position);
             
             Debug.Log($"Miss distance: {missDistance}");
             Debug.Log($"widthAlignModifier: {widthAlignModifier}");
