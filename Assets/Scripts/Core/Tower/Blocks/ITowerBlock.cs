@@ -7,6 +7,6 @@ namespace Core.Tower.Blocks
     {
         Vector3 Position { get; set; }
         void StartMovement(float yPosition, BlockMovementPathGenerator movementPathGenerator);
-        void Drop();
+        void Drop(float missDistance);
     }
 }

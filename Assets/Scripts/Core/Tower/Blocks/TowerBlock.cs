@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
-//using System.IO;
 using System.Linq;
 using Tweening;
 using Tweening.Operations;
-//using DG.Tweening;
-//using DG.Tweening.Plugins.Core.PathCore;
 using UnityEngine;
 
 namespace Core.Tower.Blocks
 {
     public class TowerBlock : MonoBehaviour, ITowerBlock
     {
+        [SerializeField] private BlockSplitter _blockSplitter;
+        
         private ITowerBlockSettings _settings;
         private SimpleTweener _simpleTweener;
 
         private ITweenOperation _currentTween;
+        private bool _isXMovement;
         
         public Vector3 Position
         {
@@ -35,23 +35,24 @@ namespace Core.Tower.Blocks
         public void StartMovement(float yPosition, BlockMovementPathGenerator movementPathGenerator)
         {
             var waypoints = movementPathGenerator.GetNext(_settings.Width, yPosition);
-            AlignSelfAtStart(waypoints, yPosition);
+            _isXMovement = GetIsXMovement(waypoints);
+            AlignSelfAtStart(yPosition);
 
             RunPathTween(waypoints);
         }
-        public void Drop()
+        public void Drop(float missDistance)
         {
             _currentTween?.Stop();
+            _blockSplitter.Split(missDistance, _isXMovement);
         }
 
-        private void AlignSelfAtStart(IEnumerable<Vector3> path, float yPosition)
+        private void AlignSelfAtStart(float yPosition)
         {
             transform.position = 
-                path.First().x == 0
+                _isXMovement
                     ? new Vector3(transform.position.z, yPosition, _settings.Width)
                     : new Vector3(_settings.Width, yPosition, transform.position.z);
         }
-
         private void RunPathTween(IEnumerable<Vector3> waypoints)
         {
             _currentTween = CreatePathTween(waypoints);
@@ -64,6 +65,11 @@ namespace Core.Tower.Blocks
         private ITweenOperation CreatePathTween(IEnumerable<Vector3> waypoints)
         {
             return new PathMovement(transform, waypoints.ToArray(), _settings.MovementDuration);
+        }
+
+        private bool GetIsXMovement(IEnumerable<Vector3> waypoints)
+        {
+            return waypoints.First().x == 0;
         }
     }
 }

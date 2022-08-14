@@ -23,13 +23,14 @@ namespace Core.Tower
         public void PlaceBlock(ITowerBlock block)
         {
             FixMissPlacing(block);
-            block.Drop();
+            var missDistance = GetMissDistance(block.Position);
+            block.Drop(missDistance <= _settings.MissPlacingTolerance ? 0 : missDistance);
             _blocks.Add(block);
         }
         public void PlaceBlockAsIdeal(ITowerBlock block)
         {
             block.Position = NextBlockPosition;
-            block.Drop();
+            block.Drop(0);
             _blocks.Add(block);
         }
         
@@ -40,7 +41,7 @@ namespace Core.Tower
 
         private void FixMissPlacing(ITowerBlock towerBlock)
         {
-            float missDistance = GetMissDistance(towerBlock.Position);
+            var missDistance = GetMissDistance(towerBlock.Position);
             if (missDistance <= _settings.MissPlacingTolerance)
             {
                 towerBlock.Position = NextBlockPosition;
