@@ -41,25 +41,8 @@ namespace Core.Tower.Blocks
             if (missDistance >= _block.Scale.magnitude)
                 throw new ApplicationException("missDistance >= _block.Scale.magnitude. Run event: fail");
             
-
-            GameObject go = (_block as MonoBehaviour).gameObject;
-            GameObject dublicate = GameObject.Instantiate(go);
-            dublicate.name = "Block - CLONE";
-            dublicate.SetActive(false);
-            
-            
             _block.Scale = ValueToCorrectAxis(Mathf.Abs(axisScale - widthToCut), isZMovement, _block.Scale);
             _block.Position = ValueToCorrectAxis(axisPosition + (-widthAlignModifier * widthToCut * 0.5f), isZMovement, _block.Position);
-            
-            Debug.Log($"Miss distance: {missDistance}");
-            Debug.Log($"widthAlignModifier: {widthAlignModifier}");
-            Debug.Log($"axisScale: {axisScale}");
-            Debug.Log($"widthToSave: {widthToSave}");
-            Debug.Log($"widthToCut: {widthToCut}");
-            Debug.Log($"_block.Scale: {_block.Scale}");
-            Debug.Log($"_block.Position: {_block.Position}");
-            Debug.Log($"----------------");
-
         }
         
         private float ConvertWidthToScale(float width)
