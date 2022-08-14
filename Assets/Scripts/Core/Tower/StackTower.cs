@@ -59,11 +59,25 @@ namespace Core.Tower
         }
         private float GetMissDistance(Vector3 position)
         {
-            return Vector3.Distance(position, NextBlockPosition - new Vector3(0, 0, 0));
+            var lastBlockPos = LastBlock.Position + new Vector3(0, 1, 0);
+            var missDistance = Vector3.Distance(position, lastBlockPos);
+
+            CreateDebugGO(position).gameObject.name = "pos";
+            CreateDebugGO(lastBlockPos).gameObject.name = "lastblockpos (y-1)";
+            
+            return missDistance;
         }
         private ITowerBlock GetLastBlock()
         {
             return _blocks.Count == 0 ? null : _blocks.Last();
+        }
+
+        private GameObject CreateDebugGO(Vector3 pos)
+        {
+            GameObject debug = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            debug.transform.position = pos;
+            debug.transform.localScale = Vector3.one * 0.1f;
+            return debug;
         }
     }
 }

@@ -32,7 +32,17 @@ namespace Core.Tower.Blocks
             var widthToSave = axisScale - missDistance;
             var widthToCut = axisScale - widthToSave;
             _block.Scale = ValueToCorrectAxis(widthToSave, isZMovement, _block.Scale);
-            _block.Position = ValueToCorrectAxis(widthAlignModifier * (widthToCut / 2), isZMovement, _block.Position);
+            _block.Position = ValueToCorrectAxis((widthAlignModifier * widthToCut) / 2, isZMovement, _block.Position);
+            
+            Debug.Log($"Miss distance: {missDistance}");
+            Debug.Log($"widthAlignModifier: {widthAlignModifier}");
+            Debug.Log($"axisScale: {axisScale}");
+            Debug.Log($"widthToSave: {widthToSave}");
+            Debug.Log($"widthToCut: {widthToCut}");
+            Debug.Log($"_block.Scale: {_block.Scale}");
+            Debug.Log($"_block.Position: {_block.Position}");
+            Debug.Log($"----------------");
+
         }
         
         private float ConvertWidthToScale(float width)
