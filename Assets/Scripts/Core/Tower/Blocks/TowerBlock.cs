@@ -15,7 +15,7 @@ namespace Core.Tower.Blocks
         private Vector3 _towerCenter;
 
         private ITweenOperation _currentTween;
-        private bool _isXMovement;
+        private bool _isZMovement;
         
         public Vector3 Position
         {
@@ -38,7 +38,7 @@ namespace Core.Tower.Blocks
         public void StartMovement(float yPosition, BlockMovementPathGenerator movementPathGenerator)
         {
             var waypoints = movementPathGenerator.GetNext(_settings.Width, yPosition);
-            _isXMovement = GetIsXMovement(waypoints);
+            _isZMovement = GetIsXMovement(waypoints);
             AlignSelfAtStart(yPosition);
 
             RunPathTween(waypoints);
@@ -46,13 +46,13 @@ namespace Core.Tower.Blocks
         public void Drop(float missDistance)
         {
             _currentTween?.Stop();
-            _blockSplitter.Split(missDistance, _isXMovement);
+            _blockSplitter.Split(missDistance, _isZMovement);
         }
 
         private void AlignSelfAtStart(float yPosition)
         {
             transform.position = 
-                _isXMovement
+                _isZMovement
                     ? new Vector3(transform.position.z, yPosition, _settings.Width)
                     : new Vector3(_settings.Width, yPosition, transform.position.z);
         }
