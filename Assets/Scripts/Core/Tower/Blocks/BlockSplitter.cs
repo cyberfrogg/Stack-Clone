@@ -39,20 +39,21 @@ namespace Core.Tower.Blocks
                 ? ModelPosition.x >= _center.x ? 1 : -1
                 : ModelPosition.z <= _center.z ? -1 : 1;
 
-            var widthToSave = _towerBlockSettings.Width - missDistance;
-            var widthToCut = _towerBlockSettings.Width - widthToSave;
-            _model.transform.localScale = ValueToCorrectAxis(ConvertWidthToScale(widthToSave), isZMovement, ModelScale);
+            var scaleCoord = !isZMovement ? ModelScale.z : ModelScale.x;
+            Debug.Log($"Scale coord: {scaleCoord}");
+
+            var widthToSave = scaleCoord - missDistance;
+            var widthToCut = scaleCoord - widthToSave;
+            Debug.Log($"Width to save: {widthToSave}");
+            Debug.Log($"Width to cut: {widthToCut}");
+            
+            ModelScale = ValueToCorrectAxis(widthToSave, isZMovement, ModelScale);
             ModelPosition = ValueToCorrectAxis(widthAlignModifier * (widthToCut / 2), isZMovement, ModelPosition);
         }
-        
-        private float ConvertWidthToScale(float width)
-        {
-            return width / _towerBlockSettings.Width;
-        }
 
-        private Vector3 ValueToCorrectAxis(float value, bool isXMovement, Vector3 initialPosition)
+        private Vector3 ValueToCorrectAxis(float value, bool isZMovement, Vector3 initialPosition)
         {
-            return !isXMovement
+            return !isZMovement
                 ? new Vector3(value, initialPosition.y, initialPosition.z)
                 : new Vector3(initialPosition.x, initialPosition.y, value);
         }
