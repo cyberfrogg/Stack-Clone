@@ -13,32 +13,30 @@ namespace Core.Tower.Blocks
         
         private ITowerBlockSettings _settings;
         private SimpleTweener _simpleTweener;
-        private Vector3 _lastBlockCenter;
-        private Vector3 _lastBlockScale;
+        private ITowerBlock _lastBlock;
 
         private ITweenOperation _currentTween;
         private bool _isZMovement;
-
-        [Header("debug:")] 
-        [SerializeField] private Vector3 _debug_center;
-        [SerializeField] private Vector3 _debug_lastBlockCenter;
-        [SerializeField] private Vector3 _debug_lastBlockScale;
         
         public Vector3 Position
         {
             get => transform.position;
             set => transform.position = value;
         }
-        public Vector3 Center { get; private set; }
-        public Vector3 Scale { get; private set; }
+        public Vector3 Scale
+        {
+            get => transform.localScale;
+            set => transform.localScale = value;
+        }
         
-        public void Initialize(ITowerBlockSettings settings, SimpleTweener simpleTweener, Vector3 lastBlockCenter, Vector3 lastBlockScale)
+        public void Initialize(ITowerBlockSettings settings, SimpleTweener simpleTweener, ITowerBlock lastBlock)
         {
             _settings = settings;
             _simpleTweener = simpleTweener;
-            _lastBlockCenter = lastBlockCenter;
-            _lastBlockScale = lastBlockScale;
-            _blockSplitter.Initialize(_settings, _lastBlockCenter, _lastBlockScale);
+            _lastBlock = lastBlock;
+            _blockSplitter.Initialize(_settings, this);
+
+            TransformAsBlock(_lastBlock);
         }
         public void Destroy()
         {
@@ -61,8 +59,6 @@ namespace Core.Tower.Blocks
             if (lastBlock == null) return;
             
             _blockSplitter.Split(missDistance, _isZMovement);
-            Center = _blockSplitter.ModelPosition;
-            Scale = _blockSplitter.ModelScale;
         }
 
         private void AlignSelfAtStart(float yPosition)
@@ -95,18 +91,19 @@ namespace Core.Tower.Blocks
         }
         private Vector3 OffsetPositionToLastCenter(Vector3 position)
         {
-            return position + new Vector3(_lastBlockCenter.x, 0, _lastBlockCenter.z);
+            return position + new Vector3(_lastBlock.Position.x, 0, _lastBlock.Position.z);
         }
         private bool GetIsZMovement(IEnumerable<Vector3> waypoints)
         {
             return waypoints.First().x == 0;
         }
-
-        private void Update()
+        private void TransformAsBlock(ITowerBlock block)
         {
-            _debug_center = Center;
-            _debug_lastBlockCenter = _lastBlockCenter;
-            _debug_lastBlockScale = _lastBlockScale;
+            if(block == null)
+                return;
+            
+            Position = block.Position;
+            Scale = block.Scale;
         }
     }
 }
