@@ -44,7 +44,7 @@ namespace Core.Tower.Blocks
                     var widthToCut = _towerBlockSettings.Width - widthToSave;
                     _model.transform.localScale = ValueToCorrectAxis(ConvertWidthToScale(widthToSave), isZMovement, ModelScale);
                     ModelPosition = ValueToCorrectAxis((widthToCut / 2), isZMovement, ModelPosition);
-                    Debug.Log("X movement && _modelPosition.x >= _towerCenter.x");
+                    Debug.Log("Z movement && _modelPosition.x >= _towerCenter.x");
                 }
                 else
                 {
@@ -52,7 +52,7 @@ namespace Core.Tower.Blocks
                     var widthToCut = _towerBlockSettings.Width - widthToSave;
                     _model.transform.localScale = ValueToCorrectAxis(ConvertWidthToScale(widthToSave), isZMovement, ModelScale);
                     ModelPosition = ValueToCorrectAxis(-(widthToCut / 2), isZMovement, ModelPosition);
-                    Debug.Log("X movement && _modelPosition.x < _towerCenter.x");
+                    Debug.Log("Z movement && _modelPosition.x < _towerCenter.x");
                 }
             }
             else
@@ -63,7 +63,7 @@ namespace Core.Tower.Blocks
                     var widthToCut = _towerBlockSettings.Width - widthToSave;
                     _model.transform.localScale = ValueToCorrectAxis(ConvertWidthToScale(widthToSave), isZMovement, ModelScale);
                     ModelPosition = ValueToCorrectAxis(-(widthToCut / 2), isZMovement, ModelPosition);
-                    Debug.Log("Z movement && _modelPosition.x <= _towerCenter.x");
+                    Debug.Log("X movement && _modelPosition.x <= _towerCenter.x");
                 }
                 else
                 {
@@ -71,7 +71,7 @@ namespace Core.Tower.Blocks
                     var widthToCut = _towerBlockSettings.Width - widthToSave;
                     _model.transform.localScale = ValueToCorrectAxis(ConvertWidthToScale(widthToSave), isZMovement, ModelScale);
                     ModelPosition = ValueToCorrectAxis((widthToCut / 2), isZMovement, ModelPosition);
-                    Debug.Log("Z movement && _modelPosition.x > _towerCenter.x");
+                    Debug.Log("X movement && _modelPosition.x > _towerCenter.x");
                 }
             }
         }

@@ -47,8 +47,9 @@ namespace Core.Tower.Blocks
 
         public void StartMovement(float yPosition, BlockMovementPathGenerator movementPathGenerator)
         {
-            var waypoints = OffsetWaypointsToLastCenter(movementPathGenerator.GetNext(_settings.Width, yPosition));
-            _isZMovement = GetIsXMovement(waypoints);
+            var waypoints = movementPathGenerator.GetNext(_settings.Width, yPosition);
+            _isZMovement = GetIsZMovement(waypoints);
+            waypoints = OffsetWaypointsToLastCenter(waypoints);
             AlignSelfAtStart(yPosition);
 
             RunPathTween(waypoints);
@@ -97,7 +98,7 @@ namespace Core.Tower.Blocks
         {
             return position + new Vector3(_lastBlockCenter.x, 0, _lastBlockCenter.z);
         }
-        private bool GetIsXMovement(IEnumerable<Vector3> waypoints)
+        private bool GetIsZMovement(IEnumerable<Vector3> waypoints)
         {
             return waypoints.First().x == 0;
         }
