@@ -72,8 +72,7 @@ namespace Core.Tower.Blocks
                     ? new Vector3(transform.position.z, yPosition, _settings.Width)
                     : new Vector3(_settings.Width, yPosition, transform.position.z);
 
-            //transform.position = OffsetPositionToLastCenter(target);
-            transform.position = target;
+            transform.position = OffsetPositionToLastCenter(target);
         }
         private void RunPathTween(IEnumerable<Vector3> waypoints)
         {
