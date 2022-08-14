@@ -29,34 +29,15 @@ namespace Core.Tower.Blocks
                 return;
 
 
-            float mod = 0;
-            if (!isXMovement)
-            {
-                if (_modelPosition.x >= _towerCenter.x)
-                {
-                    mod = 1;
-                }
-                else
-                {
-                    mod = -1;
-                }
-            }
-            else
-            {
-                if (_modelPosition.z <= _towerCenter.z)
-                {
-                    mod = -1;
-                }
-                else
-                {
-                    mod = 1;
-                }
-            }
-            
+            var widthAlignModifier = 
+                !isXMovement 
+                ? _modelPosition.x >= _towerCenter.x ? 1 : -1
+                : _modelPosition.z <= _towerCenter.z ? -1 : 1;
+
             var widthToSave = _towerBlockSettings.Width - missDistance;
             var widthToCut = _towerBlockSettings.Width - widthToSave;
             _model.transform.localScale = ValueToCorrectAxis(ConvertWidthToScale(widthToSave), isXMovement, Vector3.one);
-            _modelPosition = ValueToCorrectAxis(mod * (widthToCut / 2), isXMovement, _modelPosition);
+            _modelPosition = ValueToCorrectAxis(widthAlignModifier * (widthToCut / 2), isXMovement, _modelPosition);
         }
 
         private float ConvertWidthToScale(float width)
