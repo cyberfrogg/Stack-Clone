@@ -1,10 +1,11 @@
 ﻿using Core.Tower.Blocks;
+using UnityEngine;
 
 namespace Core.Tower
 {
     public interface ITowerBlocksFactory
     {
         ITowerBlock CreateBlock();
-        ITowerBlock CreateBlock(float width);
+        ITowerBlock CreateBlock(Vector3 lastBlockCenter);
     }
 }

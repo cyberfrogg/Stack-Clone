@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Core.Tower.Blocks;
 using UnityEngine;
 
@@ -6,13 +7,14 @@ namespace Core.Tower
 {
     public class StackTower : IStackTower
     {
-        public Vector3 NextBlockPosition => _blockPositionCalculator.GetNextPosition(_blocks.Count);
-        
         private readonly IStackTowerSettings _settings;
         private readonly ITowerBlockSettings _blockSettings;
         private readonly List<ITowerBlock> _blocks = new();
         private readonly BlockPositionCalculator _blockPositionCalculator;
 
+        public Vector3 NextBlockPosition => _blockPositionCalculator.GetNextPosition(_blocks.Count);
+        public ITowerBlock LastBlock => GetLastBlock();
+        
         public StackTower(IStackTowerSettings settings, ITowerBlockSettings blockSettings)
         {
             _settings = settings;
@@ -24,13 +26,13 @@ namespace Core.Tower
         {
             FixMissPlacing(block);
             var missDistance = GetMissDistance(block.Position);
-            block.Drop(missDistance <= _settings.MissPlacingTolerance ? 0 : missDistance);
+            block.Drop(missDistance <= _settings.MissPlacingTolerance ? 0 : missDistance, LastBlock);
             _blocks.Add(block);
         }
         public void PlaceBlockAsIdeal(ITowerBlock block)
         {
             block.Position = NextBlockPosition;
-            block.Drop(0);
+            block.Drop(0, LastBlock);
             _blocks.Add(block);
         }
         
@@ -55,10 +57,13 @@ namespace Core.Tower
             }
             _blocks.Clear();
         }
-
         private float GetMissDistance(Vector3 position)
         {
             return Vector3.Distance(position, NextBlockPosition - new Vector3(0, 0, 0));
+        }
+        private ITowerBlock GetLastBlock()
+        {
+            return _blocks.Count == 0 ? null : _blocks.Last();
         }
     }
 }

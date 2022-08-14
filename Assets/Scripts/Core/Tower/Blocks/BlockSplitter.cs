@@ -23,11 +23,10 @@ namespace Core.Tower.Blocks
             _towerBlockSettings = towerBlockSettings;
             _towerCenter = towerCenter;
         }
-        public void Split(float missDistance, bool isXMovement)
+        public Vector3 Split(float missDistance, bool isXMovement)
         {
             if (missDistance == 0)
-                return;
-
+                return _modelPosition;
 
             var widthAlignModifier = 
                 !isXMovement 
@@ -38,6 +37,8 @@ namespace Core.Tower.Blocks
             var widthToCut = _towerBlockSettings.Width - widthToSave;
             _model.transform.localScale = ValueToCorrectAxis(ConvertWidthToScale(widthToSave), isXMovement, Vector3.one);
             _modelPosition = ValueToCorrectAxis(widthAlignModifier * (widthToCut / 2), isXMovement, _modelPosition);
+
+            return _modelPosition;
         }
 
         private float ConvertWidthToScale(float width)

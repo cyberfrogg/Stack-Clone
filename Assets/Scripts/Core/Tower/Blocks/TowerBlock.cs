@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Tweening;
 using Tweening.Operations;
@@ -12,23 +13,29 @@ namespace Core.Tower.Blocks
         
         private ITowerBlockSettings _settings;
         private SimpleTweener _simpleTweener;
-        private Vector3 _towerCenter;
+        private Vector3 _lastBlockCenter;
 
         private ITweenOperation _currentTween;
         private bool _isZMovement;
+
+        [Header("debug:")] 
+        [SerializeField] private Vector3 _debug_center;
+        [SerializeField] private Vector3 _debug_lastBlockCenter;
         
         public Vector3 Position
         {
             get => transform.position;
             set => transform.position = value;
         }
+
+        public Vector3 Center { get; private set; }
         
-        public void Initialize(ITowerBlockSettings settings, SimpleTweener simpleTweener)
+        public void Initialize(ITowerBlockSettings settings, SimpleTweener simpleTweener, Vector3 lastBlockCenter)
         {
             _settings = settings;
             _simpleTweener = simpleTweener;
-            _towerCenter = _settings.TowerCenter;
-            _blockSplitter.Initialize(_settings, _towerCenter);
+            _lastBlockCenter = lastBlockCenter;
+            _blockSplitter.Initialize(_settings, _lastBlockCenter);
         }
         public void Destroy()
         {
@@ -37,16 +44,18 @@ namespace Core.Tower.Blocks
 
         public void StartMovement(float yPosition, BlockMovementPathGenerator movementPathGenerator)
         {
-            var waypoints = movementPathGenerator.GetNext(_settings.Width, yPosition);
+            var waypoints = OffsetWaypointsToLastCenter(movementPathGenerator.GetNext(_settings.Width, yPosition));
             _isZMovement = GetIsXMovement(waypoints);
             AlignSelfAtStart(yPosition);
 
             RunPathTween(waypoints);
         }
-        public void Drop(float missDistance)
+        public void Drop(float missDistance, ITowerBlock lastBlock)
         {
             _currentTween?.Stop();
-            _blockSplitter.Split(missDistance, _isZMovement);
+            
+            if(lastBlock != null)
+                Center = _blockSplitter.Split(missDistance, _isZMovement);
         }
 
         private void AlignSelfAtStart(float yPosition)
@@ -69,10 +78,21 @@ namespace Core.Tower.Blocks
         {
             return new PathMovement(transform, waypoints.ToArray(), _settings.MovementDuration);
         }
-
+        private IEnumerable<Vector3> OffsetWaypointsToLastCenter(IEnumerable<Vector3> waypoints)
+        {
+            return waypoints
+                .Select(waypoint => waypoint + new Vector3(_lastBlockCenter.x, 0, _lastBlockCenter.z))
+                .ToList();
+        }
         private bool GetIsXMovement(IEnumerable<Vector3> waypoints)
         {
             return waypoints.First().x == 0;
+        }
+
+        private void Update()
+        {
+            _debug_center = Center;
+            _debug_lastBlockCenter = _lastBlockCenter;
         }
     }
 }

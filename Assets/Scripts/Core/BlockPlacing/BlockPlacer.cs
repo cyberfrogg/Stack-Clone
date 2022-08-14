@@ -33,7 +33,7 @@ namespace Core.BlockPlacing
 
         public void CreateMovingBlock()
         {
-            _currentBlock = _towerBlockFactory.CreateBlock();
+            _currentBlock = _towerBlockFactory.CreateBlock(_tower.LastBlock.Center);
             _currentBlock.StartMovement(_tower.NextBlockPosition.y, _blockMovementPathGenerator);
         }
 
