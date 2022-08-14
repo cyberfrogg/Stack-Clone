@@ -18,12 +18,12 @@ namespace Core.Tower.Blocks
         
         public ITowerBlock CreateBlock()
         {
-            return CreateBlock(null);
+            return CreateBlock(_towerBlockSettings.TowerCenter, new Vector3(_towerBlockSettings.Width, 1, _towerBlockSettings.Width));
         }
-        public ITowerBlock CreateBlock(ITowerBlock lastBlock)
+        public ITowerBlock CreateBlock(Vector3 lastBlockCenter, Vector3 lastBlockScale)
         {
             var block = GameObject.Instantiate(_blockPrefab);
-            block.Initialize(_towerBlockSettings, _simpleTweener, lastBlock);
+            block.Initialize(_towerBlockSettings, _simpleTweener, lastBlockCenter, lastBlockScale);
             return block;
         }
     }
