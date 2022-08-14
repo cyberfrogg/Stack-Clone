@@ -34,46 +34,15 @@ namespace Core.Tower.Blocks
             if (missDistance == 0)
                 return;
 
-            int widthAlignModifier = 0;
-            
-            if (!isZMovement)
-            {
-                if (ModelPosition.x >= _center.x)
-                {
-                    var widthToSave = _towerBlockSettings.Width - missDistance;
-                    var widthToCut = _towerBlockSettings.Width - widthToSave;
-                    _model.transform.localScale = ValueToCorrectAxis(ConvertWidthToScale(widthToSave), isZMovement, ModelScale);
-                    ModelPosition = ValueToCorrectAxis((widthToCut / 2), isZMovement, ModelPosition);
-                    Debug.Log("Z movement && _modelPosition.x >= _towerCenter.x");
-                }
-                else
-                {
-                    var widthToSave = _towerBlockSettings.Width - missDistance;
-                    var widthToCut = _towerBlockSettings.Width - widthToSave;
-                    _model.transform.localScale = ValueToCorrectAxis(ConvertWidthToScale(widthToSave), isZMovement, ModelScale);
-                    ModelPosition = ValueToCorrectAxis(-(widthToCut / 2), isZMovement, ModelPosition);
-                    Debug.Log("Z movement && _modelPosition.x < _towerCenter.x");
-                }
-            }
-            else
-            {
-                if (ModelPosition.z <= _center.z)
-                {
-                    var widthToSave = _towerBlockSettings.Width - missDistance;
-                    var widthToCut = _towerBlockSettings.Width - widthToSave;
-                    _model.transform.localScale = ValueToCorrectAxis(ConvertWidthToScale(widthToSave), isZMovement, ModelScale);
-                    ModelPosition = ValueToCorrectAxis(-(widthToCut / 2), isZMovement, ModelPosition);
-                    Debug.Log("X movement && _modelPosition.x <= _towerCenter.x");
-                }
-                else
-                {
-                    var widthToSave = _towerBlockSettings.Width - missDistance;
-                    var widthToCut = _towerBlockSettings.Width - widthToSave;
-                    _model.transform.localScale = ValueToCorrectAxis(ConvertWidthToScale(widthToSave), isZMovement, ModelScale);
-                    ModelPosition = ValueToCorrectAxis((widthToCut / 2), isZMovement, ModelPosition);
-                    Debug.Log("X movement && _modelPosition.x > _towerCenter.x");
-                }
-            }
+            var widthAlignModifier = 
+                !isZMovement 
+                ? ModelPosition.x >= _center.x ? 1 : -1
+                : ModelPosition.z <= _center.z ? -1 : 1;
+
+            var widthToSave = _towerBlockSettings.Width - missDistance;
+            var widthToCut = _towerBlockSettings.Width - widthToSave;
+            _model.transform.localScale = ValueToCorrectAxis(ConvertWidthToScale(widthToSave), isZMovement, ModelScale);
+            ModelPosition = ValueToCorrectAxis(widthAlignModifier * (widthToCut / 2), isZMovement, ModelPosition);
         }
         
         private float ConvertWidthToScale(float width)
