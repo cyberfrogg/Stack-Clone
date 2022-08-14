@@ -18,7 +18,7 @@ namespace Core.Tower.Blocks
         
         public ITowerBlock CreateBlock()
         {
-            return CreateBlock(_towerBlockSettings.TowerCenter, new Vector3(_towerBlockSettings.Width, 1, _towerBlockSettings.Width));
+            return CreateBlock(_towerBlockSettings.TowerCenter, Vector3.one);
         }
         public ITowerBlock CreateBlock(Vector3 lastBlockCenter, Vector3 lastBlockScale)
         {
