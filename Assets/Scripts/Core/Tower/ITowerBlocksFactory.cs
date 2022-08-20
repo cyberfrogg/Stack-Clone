@@ -7,5 +7,6 @@ namespace Core.Tower
     {
         ITowerBlock CreateBlock();
         ITowerBlock CreateBlock(ITowerBlock lastBlock);
+        CutBlockPart CreateCutBlockPart();
     }
 }

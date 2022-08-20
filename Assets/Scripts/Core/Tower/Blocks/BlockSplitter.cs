@@ -8,20 +8,20 @@ namespace Core.Tower.Blocks
     [Serializable]
     public class BlockSplitter
     {
-        private ITowerBlockSettings _towerBlockSettings;
+        private ITowerBlocksFactory _towerBlocksFactory;
         private ITowerBlock _block;
         private ITowerBlock _lastBlock;
 
-        public void Initialize(ITowerBlockSettings towerBlockSettings, ITowerBlock block, ITowerBlock lastBlock)
+        public void Initialize(ITowerBlocksFactory towerBlocksFactory, ITowerBlock block, ITowerBlock lastBlock)
         {
-            _towerBlockSettings = towerBlockSettings;
+            _towerBlocksFactory = towerBlocksFactory;
             _block = block;
             _lastBlock = lastBlock;
         }
-        public void Split(float missDistance, bool isZMovement)
+        public BlockPlaceResult Split(float missDistance, bool isZMovement)
         {
             if (missDistance == 0)
-                return;
+                return new BlockPlaceResult(true);
 
             var widthAlignModifier = 
                 !isZMovement 
@@ -36,18 +36,15 @@ namespace Core.Tower.Blocks
             var blockTargetScale = axisScale - widthToCut;
 
             if (blockTargetScale <= 0)
-                throw new ApplicationException("Block target Scale <= 0. Run event: fail");
+                return new BlockPlaceResult(false);
 
             if (missDistance >= _block.Scale.magnitude)
-                throw new ApplicationException("missDistance >= _block.Scale.magnitude. Run event: fail");
+                return new BlockPlaceResult(false);
             
             _block.Scale = ValueToCorrectAxis(Mathf.Abs(axisScale - widthToCut), isZMovement, _block.Scale);
             _block.Position = ValueToCorrectAxis(axisPosition + (-widthAlignModifier * widthToCut * 0.5f), isZMovement, _block.Position);
-        }
-        
-        private float ConvertWidthToScale(float width)
-        {
-            return width / _towerBlockSettings.Width;
+            
+            return new BlockPlaceResult(true);
         }
 
         private Vector3 ValueToCorrectAxis(float value, bool isXMovement, Vector3 initialPosition)

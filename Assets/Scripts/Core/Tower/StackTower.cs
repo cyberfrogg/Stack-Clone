@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Core.Tower.Blocks;
 using UnityEngine;
@@ -7,6 +8,10 @@ namespace Core.Tower
 {
     public class StackTower : IStackTower
     {
+        public event Action Failed;
+
+        private bool _isFailed;
+
         private readonly IStackTowerSettings _settings;
         private readonly ITowerBlockSettings _blockSettings;
         private readonly List<ITowerBlock> _blocks = new();
@@ -22,12 +27,14 @@ namespace Core.Tower
             _blockPositionCalculator = new BlockPositionCalculator(_settings.BlockHeight);
         }
         
-        public void PlaceBlock(ITowerBlock block)
+        public void PlaceBlock(ITowerBlock block, Action<BlockPlaceResult> blockPlaceComplete)
         {
             FixMissPlacing(block);
             var missDistance = GetMissDistance(block.Position);
-            block.Drop(missDistance <= _settings.MissPlacingTolerance ? 0 : missDistance, LastBlock);
+            var placeResult = block.Drop(missDistance <= _settings.MissPlacingTolerance ? 0 : missDistance, LastBlock);
             _blocks.Add(block);
+            blockPlaceComplete?.Invoke(placeResult);
+            OnBlockPlaced(placeResult);
         }
         public void PlaceBlockAsIdeal(ITowerBlock block)
         {
@@ -62,9 +69,6 @@ namespace Core.Tower
             var lastBlockPos = LastBlock.Position + new Vector3(0, 1, 0);
             var missDistance = Vector3.Distance(position, lastBlockPos);
 
-            CreateDebugGO(position).gameObject.name = "pos";
-            CreateDebugGO(lastBlockPos).gameObject.name = "lastblockpos (y-1)";
-            
             return missDistance;
         }
         private ITowerBlock GetLastBlock()
@@ -72,12 +76,20 @@ namespace Core.Tower
             return _blocks.Count == 0 ? null : _blocks.Last();
         }
 
-        private GameObject CreateDebugGO(Vector3 pos)
+        private void OnBlockPlaced(BlockPlaceResult placeResult)
         {
-            GameObject debug = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            debug.transform.position = pos;
-            debug.transform.localScale = Vector3.one * 0.1f;
-            return debug;
+            GetLastBlock().Physics = !placeResult.IsSuccess;
+
+            if (!placeResult.IsSuccess)
+            {
+                OnFail();
+            }
+        }
+
+        private void OnFail()
+        {
+            _isFailed = true;
+            Failed?.Invoke();
         }
     }
 }

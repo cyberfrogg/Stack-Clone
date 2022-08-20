@@ -28,8 +28,13 @@ namespace Core
             _dependencies.UiScreens.GetScreen<GameScreen>().ShowOne(null);
 
             _tower = _dependencies.StackTowerFactory.CreateTower();
+            _tower.Failed += OnTowerFailed;
             _blockPlacer = _dependencies.BlockPlacerFactory.CreateBlockPlacer(_tower);
             _blockPlacer.CreateMovingBlock();
+        }
+        private void OnTowerFailed()
+        {
+            _blockPlacer.IsEnabled = false;
         }
 
         public void Reset()

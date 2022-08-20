@@ -6,6 +6,8 @@ namespace Core.BlockPlacing
 {
     public class BlockPlacer : IDestroy
     {
+        public bool IsEnabled { get; set; }
+        
         private readonly IBlockPlacerInput _input;
         private readonly IStackTower _tower;
         private readonly ITowerBlocksFactory _towerBlockFactory;
@@ -38,16 +40,21 @@ namespace Core.BlockPlacing
 
         private void OnInputPress()
         {
+            if(!IsEnabled)
+                return;
+            
             if(_currentBlock == null)
                 return;
             
-            _tower.PlaceBlock(_currentBlock);
-            OnBlockPlaced();
+            _tower.PlaceBlock(_currentBlock, OnBlockPlaced);
         }
 
-        private void OnBlockPlaced()
+        private void OnBlockPlaced(BlockPlaceResult placeResult)
         {
-            CreateMovingBlock();
+            if (placeResult.IsSuccess)
+            {
+                CreateMovingBlock();
+            }
         }
     }
 }

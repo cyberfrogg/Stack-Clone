@@ -7,7 +7,8 @@ namespace Core.Tower.Blocks
     {
         Vector3 Position { get; set; }
         Vector3 Scale { get; set; }
+        bool Physics { get; set; }
         void StartMovement(float yPosition, BlockMovementPathGenerator movementPathGenerator);
-        void Drop(float missDistance, ITowerBlock lastBlock);
+        BlockPlaceResult Drop(float missDistance, ITowerBlock lastBlock);
     }
 }

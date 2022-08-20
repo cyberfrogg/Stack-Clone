@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NaughtyAttributes;
 using Tweening;
 using Tweening.Operations;
 using UnityEngine;
@@ -9,6 +10,7 @@ namespace Core.Tower.Blocks
     public class TowerBlock : MonoBehaviour, ITowerBlock
     {
         [SerializeField] private BlockSplitter _blockSplitter;
+        [SerializeField, Required] private Rigidbody _rigidbody;
         
         private ITowerBlockSettings _settings;
         private SimpleTweener _simpleTweener;
@@ -27,14 +29,19 @@ namespace Core.Tower.Blocks
             get => transform.localScale;
             set => transform.localScale = value;
         }
-        
-        public void Initialize(ITowerBlockSettings settings, SimpleTweener simpleTweener, ITowerBlock lastBlock)
+        public bool Physics
+        {
+            get => !_rigidbody.isKinematic;
+            set => _rigidbody.isKinematic = !value;
+        }
+
+        public void Initialize(ITowerBlockSettings settings, ITowerBlocksFactory towerBlocksFactory, SimpleTweener simpleTweener, ITowerBlock lastBlock)
         {
             _settings = settings;
             _simpleTweener = simpleTweener;
             _lastBlock = lastBlock;
             Scale = lastBlock?.Scale ?? Scale;
-            _blockSplitter.Initialize(_settings, this, _lastBlock);
+            _blockSplitter.Initialize(towerBlocksFactory, this, _lastBlock);
         }
         public void Destroy()
         {
@@ -50,13 +57,14 @@ namespace Core.Tower.Blocks
 
             RunPathTween(waypoints);
         }
-        public void Drop(float missDistance, ITowerBlock lastBlock)
+        public BlockPlaceResult Drop(float missDistance, ITowerBlock lastBlock)
         {
             _currentTween?.Stop();
 
-            if (lastBlock == null) return;
+            if (lastBlock == null) 
+                return new BlockPlaceResult(true);
             
-            _blockSplitter.Split(missDistance, _isZMovement);
+            return _blockSplitter.Split(missDistance, _isZMovement);
         }
 
         private void AlignSelfAtStart(float yPosition)

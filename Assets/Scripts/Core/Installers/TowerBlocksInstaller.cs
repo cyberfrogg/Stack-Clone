@@ -12,12 +12,13 @@ namespace Core.Installers
     public class TowerBlocksInstaller
     {
         [SerializeField] private TowerBlock _towerBlockPrefab;
+        [SerializeField] private CutBlockPart _towerCutBlockPartPrefab;
         [SerializeField, Required] private TowerBlockSettings _towerBlockSettings;
         [SerializeField, Required] private SimpleTweener _simpleTweener;
         
         public ITowerBlocksFactory CreateTowerBlocksFactory()
         {
-            return new TowerBlockFactory(_towerBlockPrefab, _towerBlockSettings, _simpleTweener);
+            return new TowerBlockFactory(_towerBlockPrefab, _towerCutBlockPartPrefab, _towerBlockSettings, _simpleTweener);
         }
     }
 }

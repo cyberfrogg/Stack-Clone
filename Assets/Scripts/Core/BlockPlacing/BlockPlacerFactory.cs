@@ -20,7 +20,9 @@ namespace Core.BlockPlacing
 
         public BlockPlacer CreateBlockPlacer(IStackTower tower)
         {
-            return new BlockPlacer(_input, tower, _towerBlocksFactory, _blockMovementPathGenerator);
+            var blockPlacer = new BlockPlacer(_input, tower, _towerBlocksFactory, _blockMovementPathGenerator);
+            blockPlacer.IsEnabled = true;
+            return blockPlacer;
         }
     }
 }
