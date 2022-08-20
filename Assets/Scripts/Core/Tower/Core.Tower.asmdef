@@ -1,0 +1,4 @@
+{
+	"name": "Core.Tower",
+	"references":[ "GUID:3c2f9f5cae1ad0c41b0be4b91cbe460d", "GUID:a71b1822d07353f4db98e8f1e372c6be", "GUID:776d03a35f1b52c4a9aed9f56d7b4229" ]
+}

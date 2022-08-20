@@ -1,9 +1,9 @@
 {
-    "name": "Core.UI.Screens",
+    "name": "Core.Settings",
     "rootNamespace": "",
     "references": [
-        "GUID:776d03a35f1b52c4a9aed9f56d7b4229",
-        "GUID:5aaf4715258e2bd408a064ed33d16dc2"
+        "Core.Tower",
+        "NaughtyAttributes.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
