@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.GameFlow;
 using UnityEngine;
 
 namespace Core.UI.Screens.Impl
@@ -7,6 +8,13 @@ namespace Core.UI.Screens.Impl
     {
         public event Action<bool> Toggled;
         public event Action<UiScreen> ToggledSolo;
+
+        protected GameFlowStrap GameFlowStrap;
+        
+        public virtual void Initialzie(GameFlowStrap gameFlowStrap)
+        {
+            GameFlowStrap = gameFlowStrap;
+        }
         
         public void ToggleImmediately(bool isEnabled)
         {
