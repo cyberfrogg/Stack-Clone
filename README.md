@@ -1,5 +1,4 @@
 # Stack-Clone
-
 Stack - clone of google play game "Stack". Just a simple clone of early popular game on GooglePlay "Stack" from ketchapp
 
 ## GamePlay:
