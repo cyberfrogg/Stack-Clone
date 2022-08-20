@@ -1,3 +1,4 @@
+using Core.Camera;
 using UnityEngine;
 
 namespace Core.Installers
@@ -9,6 +10,7 @@ namespace Core.Installers
         [SerializeField] private StackTowerInstaller _stackTowerInstaller;
         [SerializeField] private TowerBlocksInstaller _towerBlocksInstaller;
         [SerializeField] private BlockPlacerInstaller _blockPlacerInstaller;
+        [SerializeField] private CameraInstaller _cameraInstaller;
         
         private Game _game;
         
@@ -27,7 +29,8 @@ namespace Core.Installers
                 _uiScreensInstaller.Create(gameFlowStrap),
                 gameFlowStrap,
                 _stackTowerInstaller.CreateStackTowerFactory(towerBlocksFactory),
-                _blockPlacerInstaller.CreateFactory(towerBlocksFactory)
+                _blockPlacerInstaller.CreateFactory(towerBlocksFactory),
+                _cameraInstaller.GetCamera()
                 );
             
             Game game = new Game(dependencies);

@@ -21,7 +21,7 @@ namespace Core.Tower.Blocks
         public BlockPlaceResult Split(float missDistance, bool isZMovement)
         {
             if (missDistance == 0)
-                return new BlockPlaceResult(true);
+                return new BlockPlaceResult(true, _block);
 
             var widthAlignModifier = 
                 !isZMovement 
@@ -36,10 +36,10 @@ namespace Core.Tower.Blocks
             var blockTargetScale = axisScale - widthToCut;
 
             if (blockTargetScale <= 0)
-                return new BlockPlaceResult(false);
+                return new BlockPlaceResult(false, _block);
 
             if (missDistance >= _block.Scale.magnitude)
-                return new BlockPlaceResult(false);
+                return new BlockPlaceResult(false, _block);
             
             _block.Scale = ValueToCorrectAxis(Mathf.Abs(axisScale - widthToCut), isZMovement, _block.Scale);
             _block.Position = ValueToCorrectAxis(axisPosition + (-widthAlignModifier * widthToCut * 0.5f), isZMovement, _block.Position);
@@ -48,7 +48,7 @@ namespace Core.Tower.Blocks
             cutBlockPart.Scale = ValueToCorrectAxis(Mathf.Abs(axisScale - widthToSave), isZMovement, _block.Scale);
             cutBlockPart.Position = ValueToCorrectAxis(axisPosition + (widthAlignModifier * widthToSave * 0.5f), isZMovement, _block.Position);
             
-            return new BlockPlaceResult(true);
+            return new BlockPlaceResult(true, _block);
         }
 
         private Vector3 ValueToCorrectAxis(float value, bool isXMovement, Vector3 initialPosition)

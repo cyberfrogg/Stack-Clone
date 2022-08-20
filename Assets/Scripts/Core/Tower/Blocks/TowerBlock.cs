@@ -34,6 +34,7 @@ namespace Core.Tower.Blocks
             get => !_rigidbody.isKinematic;
             set => _rigidbody.isKinematic = !value;
         }
+        public Transform Target => transform;
 
         public void Initialize(ITowerBlockSettings settings, ITowerBlocksFactory towerBlocksFactory, SimpleTweener simpleTweener, ITowerBlock lastBlock)
         {
@@ -62,7 +63,7 @@ namespace Core.Tower.Blocks
             _currentTween?.Stop();
 
             if (lastBlock == null) 
-                return new BlockPlaceResult(true);
+                return new BlockPlaceResult(true, this);
             
             return _blockSplitter.Split(missDistance, _isZMovement);
         }
