@@ -43,6 +43,10 @@ namespace Core.Tower.Blocks
             
             _block.Scale = ValueToCorrectAxis(Mathf.Abs(axisScale - widthToCut), isZMovement, _block.Scale);
             _block.Position = ValueToCorrectAxis(axisPosition + (-widthAlignModifier * widthToCut * 0.5f), isZMovement, _block.Position);
+
+            var cutBlockPart = CreateCutBlockPart();
+            cutBlockPart.Scale = ValueToCorrectAxis(Mathf.Abs(axisScale - widthToSave), isZMovement, _block.Scale);
+            cutBlockPart.Position = ValueToCorrectAxis(axisPosition + (widthAlignModifier * widthToSave * 0.5f), isZMovement, _block.Position);
             
             return new BlockPlaceResult(true);
         }
@@ -52,6 +56,10 @@ namespace Core.Tower.Blocks
             return !isXMovement
                 ? new Vector3(value, initialPosition.y, initialPosition.z)
                 : new Vector3(initialPosition.x, initialPosition.y, value);
+        }
+        private CutBlockPart CreateCutBlockPart()
+        {
+            return _towerBlocksFactory.CreateCutBlockPart();
         }
     }
 }
