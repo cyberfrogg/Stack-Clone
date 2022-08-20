@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using Core.Camera;
+using UnityEngine;
 using Utils;
 
 namespace Core.Tower.Blocks
 {
-    public interface ITowerBlock : IDestroy
+    public interface ITowerBlock : IDestroy, ICameraTarget
     {
         Vector3 Position { get; set; }
         Vector3 Scale { get; set; }

@@ -8,7 +8,7 @@ namespace Core.Installers
     {
         public GameFlowStrap Create()
         {
-            return new GameFlowStrap(new GameFlowEvent());
+            return new GameFlowStrap(new GameFlowEvent(), new GameFlowEvent());
         }
     }
 }

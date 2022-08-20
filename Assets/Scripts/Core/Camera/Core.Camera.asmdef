@@ -1,10 +1,9 @@
 {
-    "name": "Core.BlockPlacing",
+    "name": "Core.Camera",
     "rootNamespace": "",
     "references": [
-        "GUID:c5ffefc45ea69064587331636c97a5fd",
-        "GUID:3c2f9f5cae1ad0c41b0be4b91cbe460d",
-        "GUID:cf825ebfb12409e46802069ded621f1d"
+        "GUID:4307f53044263cf4b835bd812fc161a4",
+        "GUID:776d03a35f1b52c4a9aed9f56d7b4229"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

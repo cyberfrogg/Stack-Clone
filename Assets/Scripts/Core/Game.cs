@@ -1,5 +1,6 @@
 using Core.BlockPlacing;
 using Core.Tower;
+using Core.Tower.Blocks;
 using Core.UI.Screens.Impl;
 using UnityEngine;
 
@@ -21,6 +22,7 @@ namespace Core
         {
             _dependencies.UiScreens.GetScreen<HomeScreen>().ShowOne(null);
             _dependencies.GameFlowStrap.GameStart.Started += OnGameStart;
+            _dependencies.GameFlowStrap.GameFailed.Started += OnGameFailed;
         }
 
         private void OnGameStart()
@@ -29,13 +31,25 @@ namespace Core
 
             _tower = _dependencies.StackTowerFactory.CreateTower();
             _tower.Failed += OnTowerFailed;
+            _tower.BlockPlaced += OnBlockPlaced;
             _blockPlacer = _dependencies.BlockPlacerFactory.CreateBlockPlacer(_tower);
             _blockPlacer.CreateMovingBlock();
         }
-        private void OnTowerFailed()
+        private void OnGameFailed()
         {
             _blockPlacer.IsEnabled = false;
+            _dependencies.Camera.SetTarget(null);
         }
+
+        private void OnBlockPlaced(BlockPlaceResult placeResult)
+        {
+            _dependencies.Camera.SetTarget(placeResult.Block);
+        }
+        private void OnTowerFailed()
+        {
+            _dependencies.GameFlowStrap.GameFailed.Run();
+        }
+
 
         public void Reset()
         {

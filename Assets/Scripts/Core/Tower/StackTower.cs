@@ -9,6 +9,7 @@ namespace Core.Tower
     public class StackTower : IStackTower
     {
         public event Action Failed;
+        public event Action<BlockPlaceResult> BlockPlaced;
 
         private bool _isFailed;
 
@@ -78,6 +79,7 @@ namespace Core.Tower
 
         private void OnBlockPlaced(BlockPlaceResult placeResult)
         {
+            BlockPlaced?.Invoke(placeResult);
             GetLastBlock().Physics = !placeResult.IsSuccess;
 
             if (!placeResult.IsSuccess)
